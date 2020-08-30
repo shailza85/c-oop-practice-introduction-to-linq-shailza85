@@ -15,30 +15,67 @@ namespace LINQ_Practice_Intro
 
 
             // Operating on intList:
-            Console.WriteLine($"The sum of the numbers that are greater than or equal to 25: {intList}.");
-            Console.WriteLine($"The lowest number that is divisible by both 2 and 3: {intList}.");
-            Console.WriteLine($"The average of the numbers that are single digits: {intList}.");
-            Console.WriteLine($"The number of distinct numbers starting with 2: {intList}.");
+
+            /*
+             *    static List<int> SeedIntList()
+                    {
+                        return new List<int>() { 3, 10, 2, 3, 12, 7, 12, 12, 24, 42, 101, 3, 25, 42, 60, 72, 5, 2, 100 };
+                    }
+             * */
+            Console.WriteLine($"The sum of the numbers that are greater than or equal to 25: {intList.Where(x => x >= 25).Sum()}.");
+            Console.WriteLine($"The lowest number that is divisible by both 2 and 3: {intList.Where(x=>x%2==0 && x % 3 == 0).Min()}.");
+            Console.WriteLine($"The average of the numbers that are single digits: {intList.Where(x => x < 10 && x > 0).Average()}.");
+            Console.WriteLine($"The number of distinct numbers starting with 2: {intList.Distinct().Where(x=>x.ToString().StartsWith("2")).Count()}.");
 
             // Operating on stringList:
-            Console.WriteLine($"The number of distinct strings (trimmed and case insensitive): {stringList}.");
-            Console.WriteLine($"The longest string (trimmed): {stringList}.");
-            Console.WriteLine($"The second string when ordered in reverse alphabetical order: {stringList}.");
+
+            /*
+             * static List<string> SeedStringList()
+                {
+                    return new List<string>() { "Yes", "no", "yes", "Yes ", "no", "maybe", "NO", " no", " maYbe ", "definitely" };
+                } 3y 4no maybe 2 def 1
+             * */
+            Console.WriteLine($"The number of distinct strings (trimmed and case insensitive): {stringList.Distinct().Select(x=>x.Trim()).Where(x => x != x.ToLower()).Count()}.");
+            Console.WriteLine($"The longest string (trimmed): {stringList.Aggregate("", (x, y) => x.Length > y.Length ? x : y).Trim()}.");
+            Console.WriteLine($"The second string when ordered in reverse alphabetical order: {stringList.OrderBy(x => x).Reverse().ToList()[1]}.");
 
             // Operating on nestedList: 
-            Console.WriteLine($"The overall largest number across all lists: {nestedList}.");
-            Console.WriteLine($"The number of nested lists: {nestedList}.");
-            Console.WriteLine($"The number of items in the shortest nested list: {nestedList}.");
-            Console.WriteLine($"The average of items in the longest nested list: {nestedList}.");
-            Console.WriteLine($"The number of distinct even items across all lists: {nestedList}.");
-            Console.WriteLine($"The average of distinct odd items divisible by either 3 or 5 across all lists: {nestedList}.");
+
+            /*
+             * static List<List<int>> SeedNestedList()
+        {
+            return new List<List<int>>()
+            {
+                new List<int>() { 42, 12, 3, 7 }, odd-3/3
+                new List<int>() { 12 },
+                new List<int>() { 37, 12, 8, 12, 41, 63, 17, 2, 6, 3 }, odd-37,41,63/3,17,3/3
+                new List<int>() { 90, 100, 12, 7, 17 }, odd-7,17
+                new List<int>() { 4 * 2, 13 / 3, 90 / 12, 60 % 17, 3 * 3 * 2 } odd-7.5
+            odd-3,7,37,41,63,17,7.5
+            }; 
+        }
+             */
+            Console.WriteLine($"The overall largest number across all lists: {nestedList.Select(x=>x.Max()).Max()}.");
+            Console.WriteLine($"The number of nested lists: {nestedList.Count()}.");
+            Console.WriteLine($"The number of items in the shortest nested list: {nestedList.Select(x=>x.Count()).Min()}.");
+            Console.WriteLine($"The average of items in the longest nested list: {nestedList.Select(x=>x.Count()).Average()}.");
+
+            //***
+            Console.WriteLine($"The number of distinct even items across all lists: {nestedList.Distinct().Select(x => x.Where(x=>x%2==0)).Count()}.");
+
+            //Avg, Distinct, Odd items,divisible by either 3 or 5 ****
+            Console.WriteLine($"The average of distinct odd items divisible by either 3 or 5 across all lists: {nestedList.Distinct().Select(x => x.Where(x => x % 2 == 1).Where(y => y % 3 == 0 || y%5==0).Count()).Average()}.");
 
             // Operating on personList: 
-            Console.WriteLine($"The number of females in the list: {nestedList}.");
-            Console.WriteLine($"The average number of characters in first names: {nestedList}.");
-            Console.WriteLine($"The full name of the youngest person: {nestedList}.");
-            Console.WriteLine($"The first name of the person with the longest last name: {nestedList}.");
-            Console.WriteLine($"The gender of the oldest person: {nestedList}.");
+
+            /*
+             * 
+             */
+            Console.WriteLine($"The number of females in the list: {personList.Where(x => x.Gender == Person.GenderValue.Female ).Count()}.");
+            Console.WriteLine($"The average number of characters in first names: {personList.Select(x=>x.FirstName.Count()).Average()}.");
+            Console.WriteLine($"The full name of the youngest person: {personList}.");
+            Console.WriteLine($"The first name of the person with the longest last name: {personList}.");
+            Console.WriteLine($"The gender of the oldest person: {personList}.");
 
 
 
@@ -130,7 +167,7 @@ namespace LINQ_Practice_Intro
                 new List<int>() { 37, 12, 8, 12, 41, 63, 17, 2, 6, 3 },
                 new List<int>() { 90, 100, 12, 7, 17 },
                 new List<int>() { 4 * 2, 13 / 3, 90 / 12, 60 % 17, 3 * 3 * 2 }
-            }
+            };
         }
 
         static List<string> SeedStringList()
